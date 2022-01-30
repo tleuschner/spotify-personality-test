@@ -4,6 +4,8 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+
+  --spotify-green: #1db954;
 }
 
 a {
@@ -13,4 +15,14 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+h1 {
+  font-size: max(7vw, 32px);
+  color: white;
+  margin-block-end: max(0.67em, 40px);
+}
+
+p {
+  color: white;
 }
