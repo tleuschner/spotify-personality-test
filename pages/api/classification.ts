@@ -68,6 +68,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       top_p: 1,
       frequency_penalty: 0,
       presence_penalty: 0,
+      // @ts-ignore
+      user: session?.user?.name || "",
     });
 
     const parts = response.data.choices[0].text.split(".");

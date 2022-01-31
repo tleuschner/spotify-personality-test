@@ -37,7 +37,6 @@ const Personality = () => {
       }
 
       const json = await res.json();
-      console.log(json);
       setClassification(json.classification);
       setLoading(false);
     };

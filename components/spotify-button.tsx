@@ -7,7 +7,7 @@ const LoginSpotifyButton = () => {
       className={styles.spotifyButton}
       onClick={() =>
         signIn("spotify", {
-          callbackUrl: window.location.href + "/personality",
+          callbackUrl: window.location.href + "personality",
         })
       }
     >
