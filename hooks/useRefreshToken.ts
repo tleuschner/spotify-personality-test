@@ -6,7 +6,7 @@ export default () => {
   useEffect(() => {
     if (session?.error === "RefreshAccessTokenError") {
       signIn("spotify", {
-        callbackUrl: window.location.href + "personality",
+        callbackUrl: window.location.origin + "/personality",
       }); // Force sign in to hopefully resolve error
     }
   }, [session]);
