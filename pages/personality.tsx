@@ -27,7 +27,13 @@ const Personality = () => {
 
       if (!res.ok) {
         setLoading(false);
-        setClassification(["There has been an error!"]);
+        if (res.status === 429) {
+          setClassification([
+            "Zu viele Anfragen, bitte versuche es später nochmal",
+          ]);
+        } else {
+          setClassification(["There has been an error!"]);
+        }
       }
 
       const json = await res.json();

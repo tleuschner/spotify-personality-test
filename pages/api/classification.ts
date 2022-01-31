@@ -2,12 +2,27 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import { Configuration, OpenAIApi } from "openai";
 import SpotifyWebApi from "spotify-web-api-node";
+import rateLimit from "../../utils/rate-limit";
+
+const limiter = rateLimit({
+  interval: 60 * 1000 * 3, // 3 Minutes
+  uniqueTokenPerInterval: 300, // 300 users per second
+});
+
+const MAX_REQUESTS = 15;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req });
 
   if (!session || !session.accessToken) {
     res.status(401).end();
+  }
+
+  try {
+    await limiter.check(res, MAX_REQUESTS, session.accessToken);
+  } catch (e) {
+    res.status(429).json({ error: "Rate limit exceeded" });
+    return;
   }
 
   const accessToken = session.accessToken as string;
