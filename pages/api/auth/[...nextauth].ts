@@ -51,7 +51,7 @@ export default NextAuth({
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
       authorization: {
         params: {
-          scope: "user-read-private user-top-read playlist-read-private",
+          scope: "user-read-private user-top-read",
         },
       },
     }),
