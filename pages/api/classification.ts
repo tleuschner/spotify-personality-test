@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import { Configuration, OpenAIApi } from "openai";
 import SpotifyWebApi from "spotify-web-api-node";
+import { classifySongsWithFilter } from "../../utils/classifySongsWithFilter";
 import rateLimit from "../../utils/rate-limit";
 
 const limiter = rateLimit({
@@ -52,27 +53,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .map((track) => track.name)
       .join(",");
 
-    const configuration = new Configuration({
-      apiKey: process.env.OPEN_AI_API_KEY,
-    });
-    const openai = new OpenAIApi(configuration);
+    const response = await classifySongsWithFilter(
+      topHundredSongNames,
+      session
+    );
 
-    const response = await openai.createCompletion("text-davinci-001", {
-      prompt: `Describe the personality of the listener of the following song names in 4 sentences with at least 6 words each.
-      ${topHundredSongNames}
-      
-
-      `,
-      temperature: 0.7,
-      max_tokens: 128,
-      top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0,
-      // @ts-ignore
-      user: session?.user?.name || "",
-    });
-
-    const parts = response.data.choices[0].text.split(".");
+    const parts = response.choices[0].text.split(".");
     const partsFilterd = parts.map((p) => {
       if (p.startsWith(",")) {
         return p.replace(",", "");
